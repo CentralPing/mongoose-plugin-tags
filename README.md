@@ -1,4 +1,4 @@
 mongoose-plugin-auth
 ====================
 
-Mongoose.js plugin to automatically generate tags from a document field.
+A [mongoose.js](https://github.com/LearnBoost/mongoose/) plugin to automatically generate tags from a document field.
