@@ -1,14 +1,13 @@
 var _ = require('lodash-node/modern');
 // Simplistic Latin hashtag format
-var defaultOptions = {
-  fieldPath: undefined,
-  path: 'tags',
-  match: /[#＃][a-z_0-9]+/g,
-  map: removeHash
-};
 
 module.exports = function tagsPlugin(schema, options) {
-  options = _.merge({}, defaultOptions, options || {});
+  options = _.merge({
+    fieldPath: undefined,
+    path: 'tags',
+    match: /[#＃][a-z_0-9]+/g,
+    map: removeHash
+  }, options || {});
 
   if (!schema.path(options.fieldPath)) {
     return;
