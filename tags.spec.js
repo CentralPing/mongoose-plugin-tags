@@ -14,22 +14,22 @@ var blogData = {
 };
 var expectedTags = ['blog', 'woohoo'];
 
-describe('Mongoose plugin: tags', function () {
-  beforeAll(function (done) {
-    connection = mongoose.createConnection('mongodb://localhost/unit_test');
-    connection.once('connected', function () {
+beforeAll(function (done) {
+  connection = mongoose.createConnection('mongodb://localhost/unit_test');
+  connection.once('connected', function () {
+    done();
+  });
+});
+
+afterAll(function (done) {
+  connection.db.dropDatabase(function (err, result) {
+    connection.close(function () {
       done();
     });
   });
+});
 
-  afterAll(function (done) {
-    connection.db.dropDatabase(function (err, result) {
-      connection.close(function () {
-        done();
-      });
-    });
-  });
-
+describe('Mongoose plugin: tags', function () {
   describe('with plugin declaration', function () {
     var schema;
 
@@ -43,17 +43,19 @@ describe('Mongoose plugin: tags', function () {
     });
 
     it('should add `tags` to the schema with a `fieldPath`', function () {
-      schema.plugin(tags, {fieldPath: 'blog'});
+      schema.path('blog').options.tags = true;
+      schema.plugin(tags);
       expect(schema.path('tags')).toBeDefined();
     });
   });
 
-  describe('with documents', function () {
+  describe('with one field tagged', function () {
     var Blog;
 
     it('should compile the model with the tag plugin', function () {
       var schema = BlogSchema();
-      schema.plugin(tags, {fieldPath: 'blog'});
+      schema.path('blog').options.tags = true;
+      schema.plugin(tags);
 
       Blog = model(schema);
       expect(Blog).toEqual(jasmine.any(Function));
@@ -90,6 +92,56 @@ describe('Mongoose plugin: tags', function () {
 
         blog.save(function (err, blog) {
           expect(blog.tags).toEqual(['foo', 'ahhhhyeah']);
+          done();
+        });
+      });
+    });
+  });
+
+  describe('with multiple fields tagged', function () {
+    var Blog;
+
+    it('should compile the model with the tag plugin', function () {
+      var schema = BlogSchema();
+      schema.path('title').options.tags = true;
+      schema.path('blog').options.tags = true;
+      schema.plugin(tags);
+
+      Blog = model(schema);
+      expect(Blog).toEqual(jasmine.any(Function));
+    });
+
+    it('should set `tags` to an empty array', function () {
+      expect(Blog().tags).toEqual([]);
+    });
+
+    it('should set `tags` to an empty array on initial save with no tags', function (done) {
+      Blog().save(function (err, blog) {
+        expect(blog.tags).toEqual([]);
+        done();
+      });
+    });
+
+    it('should set `tags` to an empty array', function () {
+      expect(Blog(blogData).tags).toEqual([]);
+    });
+
+    it('should set `tags` to a unique array on initial save with tags', function (done) {
+      Blog(blogData).save(function (err, blog) {
+        expect(blog.tags).toEqual(['super', 'blog', 'woohoo']);
+        done();
+      });
+    });
+
+    it('should update `tags` on subsequent saves', function (done) {
+      Blog(blogData).save(function (err, blog) {
+        blog.blog = 'This is my sweet update! #foo #AhhhhYeah';
+
+        // It shouldn't update tags till save call
+        expect(blog.tags).toEqual(['super', 'blog', 'woohoo']);
+
+        blog.save(function (err, blog) {
+          expect(blog.tags).toEqual(['super', 'foo', 'ahhhhyeah']);
           done();
         });
       });

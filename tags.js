@@ -3,15 +3,25 @@ var _ = require('lodash-node/modern');
 
 module.exports = function tagsPlugin(schema, options) {
   options = _.merge({
-    fieldPath: undefined,
+    optionKey: 'tags',
     path: 'tags',
     match: /[#＃][a-z_0-9]+/g,
     map: removeHash
   }, options || {});
 
-  if (!schema.path(options.fieldPath)) {
-    return;
-  }
+  var paths = Object.keys(schema.paths).filter(function (path) {
+    var schemaType = schema.path(path);
+
+    if (schemaType.options) {
+      if (schemaType.options.type !== undefined && schemaType.options.type.name !== 'String') {
+        return;
+      }
+
+      return schemaType.options[options.optionKey];
+    }
+  });
+
+  if (paths.length === 0) { return; }
 
   if (!schema.path(options.path)) {
     schema.path(options.path, [{
@@ -21,14 +31,16 @@ module.exports = function tagsPlugin(schema, options) {
   }
 
   schema.pre('save', function setTags(next) {
-    if (this.isModified(options.fieldPath)) {
-      this.set(options.path,
-        ((this.get(options.fieldPath) || '')
-        .toLowerCase()
-        .match(options.match) || [])
-        .map(options.map)
-        .filter(uniq)
-      );
+    var doc = this;
+    var tags;
+
+    if (paths.some(doc.isModified, doc)) {
+      doc.set(options.path, paths.reduce(function (tags, path) {
+        var val = doc.get(path) || '';
+        var matches = val.toLowerCase().match(options.match) || [];
+
+        return tags.concat(matches.map(options.map));
+      }, []).filter(uniq));
     }
 
     return next();
