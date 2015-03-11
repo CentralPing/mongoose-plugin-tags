@@ -37,15 +37,34 @@ describe('Mongoose plugin: tags', function () {
       schema = BlogSchema();
     });
 
-    it('should not add `tags` to the schema without specifying a `fieldPath`', function () {
+    it('should not add `tags` to the schema without specifying other fields with the `optionKey`', function () {
       schema.plugin(tags);
       expect(schema.path('tags')).toBeUndefined();
     });
 
-    it('should add `tags` to the schema with a `fieldPath`', function () {
+    it('should add `tags` to the schema with specifying other fields with the `optionKey`', function () {
       schema.path('blog').options.tags = true;
       schema.plugin(tags);
-      expect(schema.path('tags')).toBeDefined();
+      expect(schema.pathType('tags')).toBe('real');
+    });
+
+    it('should add `hashtags` to the schema with a `path` set to `hashtags`', function () {
+      schema.path('blog').options.tags = true;
+      schema.plugin(tags, {path: 'hashtags'});
+      expect(schema.pathType('hashtags')).toBe('real');
+    });
+
+    it('should add `tags` to the schema with specifying other fields with the `optionKey` set to `hashtags`', function () {
+      schema.path('blog').options.hashtags = true;
+      schema.plugin(tags, {optionKey: 'hashtags'});
+      expect(schema.pathType('tags')).toBe('real');
+    });
+
+    it('should set `tags` options with specified `pathOptions`', function () {
+      schema.path('blog').options.tags = true;
+      schema.plugin(tags, {pathOptions: {select: false}});
+      expect(schema.pathType('tags')).toBe('real');
+      expect(schema.path('tags').options.select).toBe(false);
     });
   });
 
@@ -101,14 +120,13 @@ describe('Mongoose plugin: tags', function () {
   describe('with multiple fields tagged', function () {
     var Blog;
 
-    it('should compile the model with the tag plugin', function () {
+    beforeAll(function () {
       var schema = BlogSchema();
       schema.path('title').options.tags = true;
       schema.path('blog').options.tags = true;
       schema.plugin(tags);
 
       Blog = model(schema);
-      expect(Blog).toEqual(jasmine.any(Function));
     });
 
     it('should set `tags` to an empty array', function () {
