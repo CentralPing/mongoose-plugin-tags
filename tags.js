@@ -29,11 +29,9 @@ module.exports = function tagsPlugin(schema, options) {
   // TODO: possibly throw an error or at least a warning
   if (paths.length === 0) { return; }
 
-  if (!schema.path(options.path)) {
-    schema.path(options.path, _.assign(options.pathOptions, {
-      type: [{type: String}],
-    }));
-  }
+  schema.path(options.path, _.assign(options.pathOptions, {
+    type: [{type: String}],
+  }));
 
   schema.pre('save', function setTags(next) {
     var doc = this;
