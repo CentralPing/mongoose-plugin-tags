@@ -4,7 +4,6 @@
   "description": "Mongoose.js plugin to automatically generate tags from a document field.",
   "main": "tags.js",
   "dependencies": {
-    "mongoose": "^4.0.0-rc4",
     "lodash-node": "^3.5.0"
   },
   "devDependencies": {
@@ -14,7 +13,11 @@
     "gulp-jasmine": "^2.0.0",
     "gulp-jshint": "^1.9.2",
     "gulp-todo": "^2.5.0",
-    "yargs": "^3.5.3"
+    "yargs": "^3.5.3",
+    "mongoose": "^4.0.0-rc4"
+  },
+  "peerDependencies": {
+    "mongoose": ">=4.0.0-rc4"
   },
   "scripts": {
     "test": "gulp test"
