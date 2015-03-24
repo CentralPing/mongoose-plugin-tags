@@ -60,9 +60,9 @@ describe('Mongoose plugin: tags', function () {
       expect(schema.pathType('tags')).toBe('real');
     });
 
-    it('should set `tags` options with specified `pathOptions`', function () {
+    it('should set `tags` options with specified `path.options`', function () {
       schema.path('blog').options.tags = true;
-      schema.plugin(tags, {pathOptions: {select: false}});
+      schema.plugin(tags, {options: {select: false}});
       expect(schema.pathType('tags')).toBe('real');
       expect(schema.path('tags').options.select).toBe(false);
     });

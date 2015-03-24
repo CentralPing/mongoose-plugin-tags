@@ -5,7 +5,7 @@ module.exports = function tagsPlugin(schema, options) {
   options = _.merge({
     optionKey: 'tags',
     path: 'tags',
-    pathOptions: {},
+    options: {},
     match: /[#＃][a-z_0-9]+/g,
     map: removeHash
   }, options || {});
@@ -29,7 +29,7 @@ module.exports = function tagsPlugin(schema, options) {
   // TODO: possibly throw an error or at least a warning
   if (paths.length === 0) { return; }
 
-  schema.path(options.path, _.assign(options.pathOptions, {
+  schema.path(options.path, _.assign(options.options, {
     type: [{type: String}],
   }));
 
