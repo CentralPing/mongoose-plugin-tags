@@ -81,23 +81,23 @@ describe('Mongoose plugin: tags', function () {
     });
 
     it('should set `tags` to an empty array', function () {
-      expect(Blog().tags).toEqual([]);
+      expect(Blog().tags.toObject()).toEqual([]);
     });
 
     it('should set `tags` to an empty array on initial save with no tags', function (done) {
       Blog().save(function (err, blog) {
-        expect(blog.tags).toEqual([]);
+        expect(blog.tags.toObject()).toEqual([]);
         done();
       });
     });
 
     it('should set `tags` to an empty array', function () {
-      expect(Blog(blogData).tags).toEqual([]);
+      expect(Blog(blogData).tags.toObject()).toEqual([]);
     });
 
     it('should set `tags` to a unique array on initial save with tags', function (done) {
       Blog(blogData).save(function (err, blog) {
-        expect(blog.tags).toEqual(expectedTags);
+        expect(blog.tags.toObject()).toEqual(expectedTags);
         done();
       });
     });
@@ -107,10 +107,10 @@ describe('Mongoose plugin: tags', function () {
         blog.blog = 'This is my sweet update! #foo #AhhhhYeah';
 
         // It shouldn't update tags till save call
-        expect(blog.tags).toEqual(expectedTags);
+        expect(blog.tags.toObject()).toEqual(expectedTags);
 
         blog.save(function (err, blog) {
-          expect(blog.tags).toEqual(['foo', 'ahhhhyeah']);
+          expect(blog.tags.toObject()).toEqual(['foo', 'ahhhhyeah']);
           done();
         });
       });
@@ -130,23 +130,23 @@ describe('Mongoose plugin: tags', function () {
     });
 
     it('should set `tags` to an empty array', function () {
-      expect(Blog().tags).toEqual([]);
+      expect(Blog().tags.toObject()).toEqual([]);
     });
 
     it('should set `tags` to an empty array on initial save with no tags', function (done) {
       Blog().save(function (err, blog) {
-        expect(blog.tags).toEqual([]);
+        expect(blog.tags.toObject()).toEqual([]);
         done();
       });
     });
 
     it('should set `tags` to an empty array', function () {
-      expect(Blog(blogData).tags).toEqual([]);
+      expect(Blog(blogData).tags.toObject()).toEqual([]);
     });
 
     it('should set `tags` to a unique array on initial save with tags', function (done) {
       Blog(blogData).save(function (err, blog) {
-        expect(blog.tags).toEqual(['super', 'blog', 'woohoo']);
+        expect(blog.tags.toObject()).toEqual(['super', 'blog', 'woohoo']);
         done();
       });
     });
@@ -156,10 +156,10 @@ describe('Mongoose plugin: tags', function () {
         blog.blog = 'This is my sweet update! #foo #AhhhhYeah';
 
         // It shouldn't update tags till save call
-        expect(blog.tags).toEqual(['super', 'blog', 'woohoo']);
+        expect(blog.tags.toObject()).toEqual(['super', 'blog', 'woohoo']);
 
         blog.save(function (err, blog) {
-          expect(blog.tags).toEqual(['super', 'foo', 'ahhhhyeah']);
+          expect(blog.tags.toObject()).toEqual(['super', 'foo', 'ahhhhyeah']);
           done();
         });
       });
