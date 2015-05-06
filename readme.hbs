@@ -8,25 +8,10 @@ A [mongoose.js](https://github.com/LearnBoost/mongoose/) plugin to automatically
 *Note: tagging updates occur when document is saved.*
 
 ## API Reference
-**Example**  
-```js
-var tagsPlugin = require('mongoose-plugin-tags');
-var schema = Schema({...});
-schema.plugin(tagsPlugin[, OPTIONS]);
-```
-<a name="module_mongoose-plugin-tags..options"></a>
-### mongoose-plugin-tags~options
-**Kind**: inner property of <code>[mongoose-plugin-tags](#module_mongoose-plugin-tags)</code>  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| [options] | <code>object</code> |  |  |
-| options.path | <code>string</code> | <code>&quot;tags&quot;</code> | the path to create the propterty for storing tags. |
-| options.optionKey | <code>string</code> | <code>&quot;tags&quot;</code> | the path options key to mark paths for inclusion in tagging. |
-| options.options | <code>object</code> |  | property options to set (`type` will always be an `Array` of `String`). `(e.g. {select: false})` |
-| options.match | <code>string</code> | <code>&quot;/[#＃][a-z_0-9]+/g&quot;</code> | the regular expression to match tags. |
-| options.map | <code>string</code> | <code>&quot;function&quot;</code> | the function to strip tag indicators (e.g. '#'). Defaults to stripping the first character from a tag. |
-
+{{#module name="mongoose-plugin-tags"~}}
+{{>body~}}
+{{>members~}}
+{{/module}}
 
 ## Examples
 

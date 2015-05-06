@@ -1,7 +1,25 @@
 var _ = require('lodash-node/modern');
 // Simplistic Latin hashtag format
 
+/**
+ * @module mongoose-plugin-tags
+ * @example
+```js
+var tagsPlugin = require('mongoose-plugin-tags');
+var schema = Schema({...});
+schema.plugin(tagsPlugin[, OPTIONS]);
+```
+*/
+
 module.exports = function tagsPlugin(schema, options) {
+    /**
+   * @param {object} [options]
+   * @param {string} options.path=tags - the path to create the propterty for storing tags.
+   * @param {string} options.optionKey=tags - the path options key to mark paths for inclusion in tagging.
+   * @param {object} options.options - property options to set (`type` will always be an `Array` of `String`). `(e.g. {select: false})`
+   * @param {string} options.match=/[#＃][a-z_0-9]+/g - the regular expression to match tags.
+   * @param {string} options.map=function - the function to strip tag indicators (e.g. '#'). Defaults to stripping the first character from a tag.
+  */
   options = _.merge({
     optionKey: 'tags',
     path: 'tags',
