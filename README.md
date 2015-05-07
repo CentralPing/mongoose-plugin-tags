@@ -2,6 +2,8 @@ mongoose-plugin-tags
 ====================
 
 [ ![Codeship Status for CentralPing/mongoose-plugin-tags](https://codeship.com/projects/39caf290-4b42-0132-6abf-22e4e23acdc5/status)](https://codeship.com/projects/46704)
+[ ![Code Climate for CentralPing/mongoose-plugin-tags](https://codeclimate.com/github/CentralPing/mongoose-plugin-tags/badges/gpa.svg)](https://codeclimate.com/github/CentralPing/mongoose-plugin-tags)
+[ ![Dependency Status for CentralPing/mongoose-plugin-tags](https://david-dm.org/CentralPing/mongoose-plugin-tags.svg)](https://david-dm.org/CentralPing/mongoose-plugin-tags)
 
 A [mongoose.js](https://github.com/LearnBoost/mongoose/) plugin to automatically generate tags from a document path.
 
@@ -69,3 +71,7 @@ foo.foo = 'You know what grinds my gears? #rant'; // foo.tags --> []
 foo.bar = '#People #who #use #hashtags #like #this'; // foo.tags --> []
 foo.save(); // foo.tags --> ['rant', 'people', 'who', 'use', 'hashtags', 'like', 'this']
 ```
+
+# License
+
+Apache 2.0
