@@ -1,3 +1,5 @@
+/* jshint node: true, jasmine: true */
+
 var mongoose = require('mongoose');
 var tags = require('./tags');
 var Schema = mongoose.Schema;

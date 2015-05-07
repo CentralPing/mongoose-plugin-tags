@@ -1,3 +1,5 @@
+/* jshint node: true */
+
 var _ = require('lodash-node/modern');
 // Simplistic Latin hashtag format
 
@@ -53,7 +55,6 @@ module.exports = function tagsPlugin(schema, options) {
 
   schema.pre('save', function setTags(next) {
     var doc = this;
-    var tags;
 
     // Only update if one of the marked paths is modified
     if (paths.some(doc.isModified, doc)) {
