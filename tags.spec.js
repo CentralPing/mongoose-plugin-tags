@@ -1,13 +1,15 @@
+'use strict';
 /* jshint node: true, jasmine: true */
 
 var mongoose = require('mongoose');
 var tags = require('./tags');
 var Schema = mongoose.Schema;
+var connection;
 
 // Mongoose uses internal caching for models.
 // While {cache: false} works with most models, models using references
 // use the internal model cache for the reference.
-// This removes the mongoose entirely from node's cache
+// This removes mongoose entirely from node's cache
 delete require.cache.mongoose;
 
 var blogData = {
@@ -36,7 +38,7 @@ describe('Mongoose plugin: tags', function () {
     var schema;
 
     beforeEach(function () {
-      schema = BlogSchema();
+      schema = blogSchema();
     });
 
     it('should not add `tags` to the schema without specifying other fields with the `optionKey`', function () {
@@ -74,7 +76,7 @@ describe('Mongoose plugin: tags', function () {
     var Blog;
 
     it('should compile the model with the tag plugin', function () {
-      var schema = BlogSchema();
+      var schema = blogSchema();
       schema.path('blog').options.tags = true;
       schema.plugin(tags);
 
@@ -83,29 +85,34 @@ describe('Mongoose plugin: tags', function () {
     });
 
     it('should set `tags` to an empty array', function () {
-      expect(Blog().tags.toObject()).toEqual([]);
+      var blog = new Blog();
+      expect(blog.tags.toObject()).toEqual([]);
     });
 
     it('should set `tags` to an empty array on initial save with no tags', function (done) {
-      Blog().save(function (err, blog) {
+      var blog = new Blog();
+      blog.save(function (err, blog) {
         expect(blog.tags.toObject()).toEqual([]);
         done();
       });
     });
 
     it('should set `tags` to an empty array', function () {
-      expect(Blog(blogData).tags.toObject()).toEqual([]);
+      var blog = new Blog(blogData);
+      expect(blog.tags.toObject()).toEqual([]);
     });
 
     it('should set `tags` to a unique array on initial save with tags', function (done) {
-      Blog(blogData).save(function (err, blog) {
+      var blog = new Blog(blogData);
+      blog.save(function (err, blog) {
         expect(blog.tags.toObject()).toEqual(expectedTags);
         done();
       });
     });
 
     it('should update `tags` on subsequent saves', function (done) {
-      Blog(blogData).save(function (err, blog) {
+      var blog = new Blog(blogData);
+      blog.save(function (err, blog) {
         blog.blog = 'This is my sweet update! #foo #AhhhhYeah';
 
         // It shouldn't update tags till save call
@@ -123,7 +130,7 @@ describe('Mongoose plugin: tags', function () {
     var Blog;
 
     beforeAll(function () {
-      var schema = BlogSchema();
+      var schema = blogSchema();
       schema.path('title').options.tags = true;
       schema.path('blog').options.tags = true;
       schema.plugin(tags);
@@ -132,29 +139,34 @@ describe('Mongoose plugin: tags', function () {
     });
 
     it('should set `tags` to an empty array', function () {
-      expect(Blog().tags.toObject()).toEqual([]);
+      var blog = new Blog();
+      expect(blog.tags.toObject()).toEqual([]);
     });
 
     it('should set `tags` to an empty array on initial save with no tags', function (done) {
-      Blog().save(function (err, blog) {
+      var blog = new Blog();
+      blog.save(function (err, blog) {
         expect(blog.tags.toObject()).toEqual([]);
         done();
       });
     });
 
     it('should set `tags` to an empty array', function () {
-      expect(Blog(blogData).tags.toObject()).toEqual([]);
+      var blog = new Blog(blogData);
+      expect(blog.tags.toObject()).toEqual([]);
     });
 
     it('should set `tags` to a unique array on initial save with tags', function (done) {
-      Blog(blogData).save(function (err, blog) {
+      var blog = new Blog(blogData);
+      blog.save(function (err, blog) {
         expect(blog.tags.toObject()).toEqual(['super', 'blog', 'woohoo']);
         done();
       });
     });
 
     it('should update `tags` on subsequent saves', function (done) {
-      Blog(blogData).save(function (err, blog) {
+      var blog = new Blog(blogData);
+      blog.save(function (err, blog) {
         blog.blog = 'This is my sweet update! #foo #AhhhhYeah';
 
         // It shouldn't update tags till save call
@@ -180,8 +192,8 @@ function model(name, schema) {
   return connection.model(name, schema, name);
 }
 
-function BlogSchema() {
-  return Schema({
+function blogSchema() {
+  return new Schema({
     title: String,
     blog: String,
     created: {type: Date, 'default': Date.now}
