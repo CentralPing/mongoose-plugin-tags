@@ -1,6 +1,7 @@
 'use strict';
-/* jshint node: true, jasmine: true */
+/* jshint node: true, mocha: true, expr: true */
 
+var expect = require('chai').expect;
 var mongoose = require('mongoose');
 var tags = require('./tags');
 
@@ -24,14 +25,14 @@ var blogData = {
 };
 var expectedTags = ['blog', 'woohoo'];
 
-beforeAll(function (done) {
+before(function (done) {
   connection = mongoose.createConnection(connectionString);
   connection.once('connected', function () {
     done();
   });
 });
 
-afterAll(function (done) {
+after(function (done) {
   connection.db.dropDatabase(function (err, result) {
     connection.close(function () {
       done();
@@ -49,32 +50,32 @@ describe('Mongoose plugin: tags', function () {
 
     it('should not add `tags` to the schema without specifying other fields with the `optionKey`', function () {
       schema.plugin(tags);
-      expect(schema.path('tags')).toBeUndefined();
+      expect(schema.path('tags')).to.be.undefined;
     });
 
     it('should add `tags` to the schema with specifying other fields with the `optionKey`', function () {
       schema.path('blog').options.tags = true;
       schema.plugin(tags);
-      expect(schema.pathType('tags')).toBe('real');
+      expect(schema.pathType('tags')).to.be.equal('real');
     });
 
     it('should add `hashtags` to the schema with a `path` set to `hashtags`', function () {
       schema.path('blog').options.tags = true;
       schema.plugin(tags, {path: 'hashtags'});
-      expect(schema.pathType('hashtags')).toBe('real');
+      expect(schema.pathType('hashtags')).to.be.equal('real');
     });
 
     it('should add `tags` to the schema with specifying other fields with the `optionKey` set to `hashtags`', function () {
       schema.path('blog').options.hashtags = true;
       schema.plugin(tags, {optionKey: 'hashtags'});
-      expect(schema.pathType('tags')).toBe('real');
+      expect(schema.pathType('tags')).to.be.equal('real');
     });
 
     it('should set `tags` options with specified `path.options`', function () {
       schema.path('blog').options.tags = true;
       schema.plugin(tags, {options: {select: false}});
-      expect(schema.pathType('tags')).toBe('real');
-      expect(schema.path('tags').options.select).toBe(false);
+      expect(schema.pathType('tags')).to.be.equal('real');
+      expect(schema.path('tags').options.select).to.be.equal(false);
     });
   });
 
@@ -87,31 +88,31 @@ describe('Mongoose plugin: tags', function () {
       schema.plugin(tags);
 
       Blog = model(schema);
-      expect(Blog).toEqual(jasmine.any(Function));
+      expect(Blog).to.be.an.instanceof(Function);
     });
 
     it('should set `tags` to an empty array', function () {
       var blog = new Blog();
-      expect(blog.tags.toObject()).toEqual([]);
+      expect(blog.tags.toObject()).to.be.empty;
     });
 
     it('should set `tags` to an empty array on initial save with no tags', function (done) {
       var blog = new Blog();
       blog.save(function (err, blog) {
-        expect(blog.tags.toObject()).toEqual([]);
+        expect(blog.tags.toObject()).to.be.empty;
         done();
       });
     });
 
     it('should set `tags` to an empty array', function () {
       var blog = new Blog(blogData);
-      expect(blog.tags.toObject()).toEqual([]);
+      expect(blog.tags.toObject()).to.be.empty;
     });
 
     it('should set `tags` to a unique array on initial save with tags', function (done) {
       var blog = new Blog(blogData);
       blog.save(function (err, blog) {
-        expect(blog.tags.toObject()).toEqual(expectedTags);
+        expect(blog.tags.toObject()).to.be.deep.equal(expectedTags);
         done();
       });
     });
@@ -122,10 +123,10 @@ describe('Mongoose plugin: tags', function () {
         blog.blog = 'This is my sweet update! #foo #AhhhhYeah';
 
         // It shouldn't update tags till save call
-        expect(blog.tags.toObject()).toEqual(expectedTags);
+        expect(blog.tags.toObject()).to.be.deep.equal(expectedTags);
 
         blog.save(function (err, blog) {
-          expect(blog.tags.toObject()).toEqual(['foo', 'ahhhhyeah']);
+          expect(blog.tags.toObject()).to.be.deep.equal(['foo', 'ahhhhyeah']);
           done();
         });
       });
@@ -135,7 +136,7 @@ describe('Mongoose plugin: tags', function () {
   describe('with multiple fields tagged', function () {
     var Blog;
 
-    beforeAll(function () {
+    before(function () {
       var schema = blogSchema();
       schema.path('title').options.tags = true;
       schema.path('blog').options.tags = true;
@@ -146,26 +147,26 @@ describe('Mongoose plugin: tags', function () {
 
     it('should set `tags` to an empty array', function () {
       var blog = new Blog();
-      expect(blog.tags.toObject()).toEqual([]);
+      expect(blog.tags.toObject()).to.be.empty;
     });
 
     it('should set `tags` to an empty array on initial save with no tags', function (done) {
       var blog = new Blog();
       blog.save(function (err, blog) {
-        expect(blog.tags.toObject()).toEqual([]);
+        expect(blog.tags.toObject()).to.be.empty;
         done();
       });
     });
 
     it('should set `tags` to an empty array', function () {
       var blog = new Blog(blogData);
-      expect(blog.tags.toObject()).toEqual([]);
+      expect(blog.tags.toObject()).to.be.empty;
     });
 
     it('should set `tags` to a unique array on initial save with tags', function (done) {
       var blog = new Blog(blogData);
       blog.save(function (err, blog) {
-        expect(blog.tags.toObject()).toEqual(['super', 'blog', 'woohoo']);
+        expect(blog.tags.toObject()).to.be.deep.equal(['super', 'blog', 'woohoo']);
         done();
       });
     });
@@ -176,10 +177,10 @@ describe('Mongoose plugin: tags', function () {
         blog.blog = 'This is my sweet update! #foo #AhhhhYeah';
 
         // It shouldn't update tags till save call
-        expect(blog.tags.toObject()).toEqual(['super', 'blog', 'woohoo']);
+        expect(blog.tags.toObject()).to.be.deep.equal(['super', 'blog', 'woohoo']);
 
         blog.save(function (err, blog) {
-          expect(blog.tags.toObject()).toEqual(['super', 'foo', 'ahhhhyeah']);
+          expect(blog.tags.toObject()).to.be.deep.equal(['super', 'foo', 'ahhhhyeah']);
           done();
         });
       });
