@@ -3,6 +3,12 @@
 
 var mongoose = require('mongoose');
 var tags = require('./tags');
+
+var connectionString = 'mongodb://' +
+  (process.env.MONGO_HOST || 'localhost') +
+  (process.env.MONGO_PORT ? ':' + process.env.MONGO_PORT : '') +
+  '/unit_test';
+
 var Schema = mongoose.Schema;
 var connection;
 
@@ -19,7 +25,7 @@ var blogData = {
 var expectedTags = ['blog', 'woohoo'];
 
 beforeAll(function (done) {
-  connection = mongoose.createConnection('mongodb://localhost/unit_test');
+  connection = mongoose.createConnection(connectionString);
   connection.once('connected', function () {
     done();
   });
