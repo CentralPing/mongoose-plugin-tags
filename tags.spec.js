@@ -41,6 +41,9 @@ after(function (done) {
 });
 
 describe('Mongoose plugin: tags', function () {
+  // Prevent test timeout on travis
+  this.timeout(5000);
+
   describe('with plugin declaration', function () {
     var schema;
 
