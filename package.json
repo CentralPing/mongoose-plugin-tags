@@ -4,7 +4,7 @@
   "description": "Mongoose.js plugin to automatically generate tags from a document field.",
   "main": "tags.js",
   "dependencies": {
-    "lodash-node": "^3.8.0"
+    "lodash": "^4.6.1"
   },
   "devDependencies": {
     "chai": "^3.4.0",
