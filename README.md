@@ -1,12 +1,12 @@
 mongoose-plugin-tags
 ====================
 
-[ ![Codeship Status for CentralPing/mongoose-plugin-tags](https://codeship.com/projects/39caf290-4b42-0132-6abf-22e4e23acdc5/status)](https://codeship.com/projects/46704)
+[![Codeship Status for CentralPing/mongoose-plugin-tags](https://codeship.com/projects/39caf290-4b42-0132-6abf-22e4e23acdc5/status)](https://codeship.com/projects/46704)
 [![Build Status](https://travis-ci.org/CentralPing/mongoose-plugin-tags.svg?branch=master)](https://travis-ci.org/CentralPing/mongoose-plugin-tags)
-[ ![Code Climate for CentralPing/mongoose-plugin-tags](https://codeclimate.com/github/CentralPing/mongoose-plugin-tags/badges/gpa.svg)](https://codeclimate.com/github/CentralPing/mongoose-plugin-tags)
-[ ![Dependency Status for CentralPing/mongoose-plugin-tags](https://david-dm.org/CentralPing/mongoose-plugin-tags.svg)](https://david-dm.org/CentralPing/mongoose-plugin-tags)
+[![Code Climate for CentralPing/mongoose-plugin-tags](https://codeclimate.com/github/CentralPing/mongoose-plugin-tags/badges/gpa.svg)](https://codeclimate.com/github/CentralPing/mongoose-plugin-tags)
+[![Dependency Status for CentralPing/mongoose-plugin-tags](https://david-dm.org/CentralPing/mongoose-plugin-tags.svg)](https://david-dm.org/CentralPing/mongoose-plugin-tags)
 
-A [mongoose.js](https://github.com/LearnBoost/mongoose/) plugin to automatically generate tags from a document path.
+A [mongoose.js](https://github.com/Automattic/mongoose/) plugin to automatically generate tags from a document path.
 
 *Note: tagging updates occur when document is saved.*
 
@@ -22,6 +22,7 @@ var schema = Schema({...});
 schema.plugin(tagsPlugin[, OPTIONS]);
 ```
 <a name="module_mongoose-plugin-tags..options"></a>
+
 ### mongoose-plugin-tags~options
 **Kind**: inner property of <code>[mongoose-plugin-tags](#module_mongoose-plugin-tags)</code>  
 
