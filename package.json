@@ -7,7 +7,7 @@
     "lodash": "^4.11.1"
   },
   "devDependencies": {
-    "chai": "^3.4.0",
+    "chai": "^3.5.0",
     "faker": "^3.0.1",
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
