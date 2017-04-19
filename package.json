@@ -23,7 +23,7 @@
     "yargs": "^4.6.0"
   },
   "peerDependencies": {
-    "mongoose": ">=4"
+    "mongoose": ">=4.5.9"
   },
   "scripts": {
     "test": "gulp test"
