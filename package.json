@@ -20,7 +20,7 @@
     "gulp-util": "^3.0.7",
     "jshint": "^2.9.2",
     "mongoose": "^4.4.13",
-    "yargs": "^4.6.0"
+    "yargs": "^6.0.0"
   },
   "peerDependencies": {
     "mongoose": ">=4"
